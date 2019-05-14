@@ -4,11 +4,10 @@ const OptimizeJsPlugin = require('optimize-js-plugin');
 
 const plugins = [
   new HtmlWebpackPlugin({
-    template: 'src/index.html',
+    template: 'client/index.html',
     filename: 'index.html',
     inject: 'body'
-  })
-];
+})];
 
 module.exports = env => {
   const environment = env || 'production';
@@ -22,12 +21,23 @@ module.exports = env => {
   }
 
   return {
+    devtool: 'eval-source-map',
     mode: environment,
-    entry: './src/index.js',
+    entry: './client/index.js',
     output: {
-      path: path.resolve(__dirname, 'build'),
-      filename: 'app.bundle' + environment + '.js'
-    },
+      path: path.resolve(__dirname, 'public'),
+      filename: 'app.bundle.js'
+  },
+
+  devServer: {
+  proxy: {
+      '/socket.io': {
+          target: 'http://localhost:3000',
+          ws: true
+      }
+  }
+},
+
 
     module: {
       rules: [
@@ -59,3 +69,4 @@ module.exports = env => {
     plugins
   };
 };
+

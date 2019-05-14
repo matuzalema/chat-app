@@ -9,19 +9,24 @@
     "init:dirs": "mkdirp sass css vendor images js",
     "init:files": "touch README.md index.html sass/style.scss js/script.js",
     "init:gitignore": "curl https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore -o .gitignore",
-    "build": "npm-run-all build:* test",
     "build:sass": "node-sass --output-style extended -o css sass",
     "build:autoprefixer": "autoprefixer-cli css/style.css",
     "build-dev:sass": "node-sass --output-style expanded --source-map true -o css sass",
     "watch": "npm run build && npm-run-all -p watch:*",
     "watch:sassprefixer": "onchange sass -- npm-run-all build:sass build:autoprefixer",
-    "watch:browser-sync": "browser-sync start --server --files \"css/*.css\" \"*.html\""
+    "watch:browser-sync": "browser-sync start --server --files \"css/*.css\" \"*.html\"",
+    "build": "webpack --env production",
+    "start": "webpack-dev-server --hot --env development"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-react": "^7.0.0",
     "autoprefixer-cli": "^1.0.0",
+    "babel-loader": "^8.0.5",
     "browser-sync": "^2.26.3",
     "globstar": "^1.0.0",
     "node-sass": "^4.10.0",
@@ -29,10 +34,6 @@
     "onchange": "^5.1.0"
   },
   "dependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^8.0.5",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
     "body-parser": "^1.18.3",
     "css-loader": "^2.1.1",
     "express": "^4.16.4",
